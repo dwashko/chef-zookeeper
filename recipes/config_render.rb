@@ -15,13 +15,10 @@
 # limitations under the License.
 
 # set the config path based on default attributes
-config_path = ::File.join(node[:zookeeper][:install_dir],
-                          "zookeeper-#{node[:zookeeper][:version]}",
-                          'conf',
-                          'zoo.cfg')
-
 # render out our config
-zookeeper_config config_path do
+zookeeper_config 'zookeeper config' do
+  path   "#{node[:zookeeper][:config_dir] % { zookeeper_version: node[:zookeeper][:version] }}/" \
+         "#{node[:zookeeper][:conf_file]}"
   config node[:zookeeper][:config]
   user   node[:zookeeper][:user]
   action :render
